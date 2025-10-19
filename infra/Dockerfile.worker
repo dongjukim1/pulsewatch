@@ -1,0 +1,7 @@
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY worker ./worker
+COPY app ./app
+CMD ["celery","-A","worker.celery_app:celery","worker","--loglevel=INFO","--concurrency=4","-Q","events"]
